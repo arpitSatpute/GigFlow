@@ -5,7 +5,7 @@ import cookieParser from 'cookie-parser';
 import connectDB from './config/db.js';
 import authRoutes from './routes/auth.js';
 import gigRoutes from './routes/gigs.js';
-// import bidRoutes from './routes/bids.js';
+import bidRoutes from './routes/bids.js';
 import { errorHandler } from './middleware/errorHandler.js';
 
 // Loading the env file
@@ -35,7 +35,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/auth', authRoutes);
 app.use('/api/gigs', gigRoutes);
-// app.use('/api/bids', bidRoutes);
+app.use('/api/bids', bidRoutes);
 
 // Error handler
 app.use(errorHandler);

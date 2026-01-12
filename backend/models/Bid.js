@@ -1,65 +1,40 @@
-const mongoose = require("mongoose");
-const bcrypt = require('bcryptjs');
+import mongoose from 'mongoose';
 
-const salt = await bcrypt.genSalt(10);
-
-const BidSchema = new mongoose.Schema({
-    
-    gigId: { 
-        type: mongoose.Schema.Types.ObjectId, 
-        ref: "Gig",
-        required: [true, 'Gig reference is required'],
-        index: true, 
+const bidSchema = new mongoose.Schema(
+  {
+    gigId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Gig',
+      required: true,
     },
-    freelancerId: { 
-        type: mongoose.Schema.Types.ObjectId, 
-        ref: "User",
-        required: [true, 'Freelancer reference is required'],
+    freelancerId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
     },
-    message: { 
-        type: String ,
-        minlength: [10, 'Message should be at least 10 characters'],
-        maxlength: [1000, 'Message cannot exceed 1000 characters'],
-        required: [true, 'Bid message is required'],
-        trim: true,
+    message: {
+      type: String,
+      required: [true, 'Please add a message'],
+      maxlength: [1000, 'Message cannot be more than 1000 characters'],
     },
     price: {
-        type: Number,
-        required: [true, 'Bid price is required'],
-        min: [1, 'Price must be at least 1'],
+      type: Number,
+      required: [true, 'Please add a price'],
+      min: [0, 'Price cannot be negative'],
     },
-    status: { 
-        type: String, 
-        enum: ['pending', 'hired', 'rejected'],
-        default: "pending",
-        required: true,
-        index: true, 
+    status: {
+      type: String,
+      enum: ['pending', 'hired', 'rejected'],
+      default: 'pending',
     },
-},
-{
+  },
+  {
     timestamps: true,
-}
+  }
 );
 
+bidSchema.index({ gigId: 1, freelancerId: 1 }, { unique: true });
 
-BidSchema.virtual('id').get(function () {
-  return this._id.toHexString();
-});
+const Bid = mongoose.model('Bid', bidSchema);
 
-
-BidSchema.set('toJSON', {
-  virtuals: true,
-  transform: (doc, ret) => {
-    ret.id = ret._id.toString();
-    delete ret._id;
-    delete ret.__v;
-    return ret;
-  },
-});
-
-BidSchema.set('toObject', { virtuals: true });
-
-
-BidSchema.index({ gigId: 1, freelancerId: 1 }, { unique: true });
-
-module.exports = mongoose.model('Bid', BidSchema);
+export default Bid;
