@@ -4,8 +4,8 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import connectDB from './config/db.js';
 import authRoutes from './routes/auth.js';
-import gigRoutes from './routes/gigs.js';
-import bidRoutes from './routes/bids.js';
+// import gigRoutes from './routes/gigs.js';
+// import bidRoutes from './routes/bids.js';
 import { errorHandler } from './middleware/errorHandler.js';
 
 // Loading the env file
@@ -34,13 +34,13 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/auth', authRoutes);
-app.use('/api/gigs', gigRoutes);
-app.use('/api/bids', bidRoutes);
+// app.use('/api/gigs', gigRoutes);
+// app.use('/api/bids', bidRoutes);
 
 // Error handler
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
   console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);

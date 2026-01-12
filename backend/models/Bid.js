@@ -13,8 +13,9 @@ const BidSchema = new mongoose.Schema({
     },
     freelancerId: { 
         type: mongoose.Schema.Types.ObjectId, 
-        ref: "User" },
+        ref: "User",
         required: [true, 'Freelancer reference is required'],
+    },
     message: { 
         type: String ,
         minlength: [10, 'Message should be at least 10 characters'],
@@ -59,6 +60,6 @@ BidSchema.set('toJSON', {
 BidSchema.set('toObject', { virtuals: true });
 
 
-BidSchema.index({ gigId: 1, status: 1 });
+BidSchema.index({ gigId: 1, freelancerId: 1 }, { unique: true });
 
 module.exports = mongoose.model('Bid', BidSchema);
