@@ -1,39 +1,41 @@
-import jwt from "jsonwebtoken";
-import asyncHandler from "express-async-handler";
+import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
 
-export const protect = asyncHandler(async (req, res, next) => {
+export const protect = async (req, res, next) => {
+  try {
     let token;
 
-    if(req.cookies && req.cookies.token) {
-        token = req.cookies.token;
+    if (req.cookies.token) {
+      token = req.cookies.token;
     }
 
-    if(!token) {
-        return res.status(401).json({
-            success: false,
-            error: "Not authorised for this route",
-        });
+    if (!token) {
+      return res.status(401).json({
+        success: false,
+        message: 'Not authorized to access this route',
+      });
     }
 
     try {
-        const decode = jwt.verify(token, process.env.JWT_SECRET);
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-        req.user = await User.findById(decode.userId).select('-password');
+      req.user = await User.findById(decoded.userId).select('-password');
 
-        if(!req.user) {
-            return res.status(401).json({
-                success: false,
-                error: "User not found"
-            });
-        }
-        next();
-    }
-    catch (err) {
-        return res.status(500).json({
-            success: false,
-            message: 'Internal Server Error',
+      if (!req.user) {
+        return res.status(401).json({
+          success: false,
+          message: 'User not found',
         });
-    }
-});
+      }
 
+      next();
+    } catch (error) {
+      return res.status(401).json({
+        success: false,
+        message: 'Not authorized to access this route',
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+};

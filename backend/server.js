@@ -4,7 +4,7 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import connectDB from './config/db.js';
 import authRoutes from './routes/auth.js';
-// import gigRoutes from './routes/gigs.js';
+import gigRoutes from './routes/gigs.js';
 // import bidRoutes from './routes/bids.js';
 import { errorHandler } from './middleware/errorHandler.js';
 
@@ -34,7 +34,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/auth', authRoutes);
-// app.use('/api/gigs', gigRoutes);
+app.use('/api/gigs', gigRoutes);
 // app.use('/api/bids', bidRoutes);
 
 // Error handler
