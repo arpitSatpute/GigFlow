@@ -28,12 +28,12 @@ const BidCard = ({ bid, showHireButton, onHire, hiring }) => {
   return (
     <div className="card">
       <div className="flex justify-between items-start mb-4">
-        <div className="flex items-center space-x-2">
+        {/* <div className="flex items-center space-x-2">
           <User className="w-5 h-5 text-gray-600" />
           <span className="font-semibold text-gray-900">
             {bid.freelancerId?.name || 'Anonymous'}
           </span>
-        </div>
+        </div> */}
         {getStatusBadge(bid.status)}
       </div>
 
