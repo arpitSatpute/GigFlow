@@ -14,7 +14,7 @@ This guide will help you set up and run the GigFlow project (both backend and fr
 
 ## 1. Clone the Repository
 ```
-git clone <your-repo-url>
+git clone https://github.com/arpitSatpute/GigFlow.git
 cd GigFlow
 ```
 
