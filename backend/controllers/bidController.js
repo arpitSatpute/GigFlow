@@ -196,6 +196,16 @@ export const hireBid = async (req, res, next) => {
 
         await bid.populate('freelancerId', 'name email');
 
+        // Emit socket event to hired freelancer
+        const io = req.app.get('io');
+        io.to(bid.freelancerId._id.toString()).emit('hired', {
+          message: `You have been hired for ${gig.title}!`,
+          gigTitle: gig.title,
+          gigId: gig._id,
+          bidId: bid._id,
+          clientName: req.user.name
+        });
+
         res.status(200).json({
             success: true,
             message: 'Freelancer hired successfully',
